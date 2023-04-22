@@ -12,11 +12,13 @@
 
 ## Configuration
 
-1. Open the extension's options page to set/change your hotkey combination and adjust voice, pitch, rate, and volume
+Open the extension's popup page to set/change your hotkey combination and adjust voice, pitch, rate, and volume
 
 ## Usage
 
-1. Click on any element to read the inner text aloud
+1. Hold down a set hotkey combination
+2. Click on any element to read the inner text aloud
+3. If third hotkey is pressed, hovered element will be highlighted
 
 ## To Do
 
@@ -24,4 +26,5 @@
 - Style options page
 - Add floating controls (stop, play/pause, cue of elements to read, etc.)
 - Make icons
+- Flesh out README to be more user-friendly
 - Publish to Chrome Web Store
