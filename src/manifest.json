@@ -1,0 +1,16 @@
+{
+	"name": "Click2Read",
+	"version": "0.0.1.0",
+	"manifest_version": 3,
+	"description": "Hold preset hotkey combination and click on any text to read it out loud",
+	"permissions": ["storage"],
+	"action": {
+		"default_popup": "options.html"
+	},
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["scripts/tool.js"]
+		}
+	]
+}

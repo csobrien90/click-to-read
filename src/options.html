@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Click2Read Options</title>
+		<style>
+		</style>
+	</head>
+
+	<body>
+		<h1>Click2Read Browser Extension</h1>
+		<form id="hotkeySettings">
+			<label for="hotkey1">Hotkey 1</label>
+			<input type="text" name="hotkey1" value="q">
+			<label for="hotkey2">Hotkey 2 (held with Hotkey 1 to read text aloud on click)</label>
+			<input type="text" name="hotkey2" value="w">
+			<label for="hotkey3">Hotkey 3 (held with Hotkeys 1 and 2 to highlight hovered element)</label>
+			<input type="text" name="hotkey3" value="e">
+		</form>
+		<form id="voiceSettings">
+			<label for="voice">Voice</label>
+			<select name="voice"></select>
+			<label for="pitch">Pitch</label>
+			<input type="number" name="pitch" min="0" max="10" step="0.1" value="1.5">
+			<label for="rate">Rate</label>
+			<input type="number" name="rate" min="0" max="10" step="0.1" value="2">
+			<label for="volume">Volume</label>
+			<input type="number" name="volume" min="0" max="1" step="0.1" value=".8">
+			<button type="button" id="testVoice">Test Voice</button>
+			<button type="button" id="restoreSettings">Restore Default Settings</button>
+		</form>
+	</body>
+	<script src="scripts/options.js"></script>
+</html>
