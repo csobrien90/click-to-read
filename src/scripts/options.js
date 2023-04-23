@@ -79,15 +79,39 @@ function saveOptions() {
 		volume: volumeInput.value
 	}
 	chrome.storage.sync.set(options, () => {
-		console.log('Options saved')
+		console.log('Click2Read options saved')
 	})
+
+	if (document.querySelector('#options-refresh-notice')) return
+
+	displayRefreshNotice('options-refresh-notice', '#voiceSettings')
 }
 
 // Save hotkeys to chrome.storage
 function saveHotkeys(key, value) {
 	chrome.storage.sync.set({[key]: value}, () => {
-		console.log('Hotkeys saved')
+		console.log('Click2Read hotkeys saved')
 	})
+	
+	if (document.querySelector('#hotkey-refresh-notice')) return
+
+	displayRefreshNotice('hotkey-refresh-notice', '#hotkeySettings')
+}
+
+function displayRefreshNotice(noticeId, formId) {
+	// Display message to user telling them to refresh page
+	const message = document.createElement('p')
+	message.id = noticeId
+	message.innerText = 'Refresh page to apply changes'
+	message.style.fontStyle = 'italic'
+	document.querySelector(formId).appendChild(message)
+	message.focus()
+	message.scrollIntoView()
+
+	// Remove message after 2 seconds
+	setTimeout(() => {
+		document.querySelector(formId).removeChild(message)
+	}, 2000)
 }
 
 // Load options from chrome.storage and set inputs in DOM
@@ -103,7 +127,6 @@ function loadOptions() {
 // Load hotkeys from chrome.storage and set inputs in DOM
 function loadHotkeys() {
 	chrome.storage.sync.get(['hotkey1', 'hotkey2', 'hotkey3', 'hotkey4'], (hotkeys) => {
-		console.log(hotkeys)
 		hotkeyLabels.forEach(label => {
 			const input = label.querySelector('input')
 			input.value = hotkeys[input.name]
@@ -122,7 +145,7 @@ function restoreDefaultOptions() {
 	}
 
 	chrome.storage.sync.set(defaultOptions, () => {
-		console.log('Options restored')
+		console.log('Click2Read options restored')
 		loadOptions()
 	})
 }
