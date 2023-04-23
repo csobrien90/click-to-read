@@ -1,4 +1,5 @@
 // Get DOM elements
+const hotkeyLabels = Array.from(document.querySelectorAll('#hotkeySettings label'))
 const voiceSelect = document.querySelector('select[name="voice"]')
 const rateInput = document.querySelector('input[name="rate"]')
 const pitchInput = document.querySelector('input[name="pitch"]')
@@ -22,7 +23,46 @@ window.speechSynthesis.onvoiceschanged = () => {
 	})
 
 	loadOptions()
+	loadHotkeys()
 }
+
+// Listen for changes to hotkey inputs
+hotkeyLabels.forEach(label => {
+	label.addEventListener('click', () => {
+		const input = label.querySelector('input')
+		const previousHotkey = input.value
+		input.value = ''
+		window.addEventListener('keydown', (e) => {
+			// Prevent default behavior of hotkey
+			e.preventDefault()
+
+			// Confirm hotkey is not already in use
+			const hotkeys = hotkeyLabels.map(label => label.querySelector('input').value)
+			if (hotkeys.includes(e.key)) {
+				// Display error message
+				const errorMessage = document.createElement('p')
+				errorMessage.innerText = 'Hotkey already in use'
+				errorMessage.style.color = 'red'
+				label.appendChild(errorMessage)
+
+				// Remove error message after 2 seconds
+				setTimeout(() => {
+					label.removeChild(errorMessage)
+				}, 2000)
+
+				// Restore previous hotkey
+				input.value = previousHotkey
+				return
+			}
+
+			saveHotkeys(input.name, e.key)
+			input.value = e.key
+
+			// Remove event listener
+			window.removeEventListener('keydown', () => {})
+		}, {once: true})
+	})
+})
 
 // Listen for changes to options inputs
 voiceSelect.addEventListener('change', saveOptions)
@@ -43,6 +83,13 @@ function saveOptions() {
 	})
 }
 
+// Save hotkeys to chrome.storage
+function saveHotkeys(key, value) {
+	chrome.storage.sync.set({[key]: value}, () => {
+		console.log('Hotkeys saved')
+	})
+}
+
 // Load options from chrome.storage and set inputs in DOM
 function loadOptions() {
 	chrome.storage.sync.get(['voice', 'rate', 'pitch', 'volume'], (options) => {
@@ -50,6 +97,17 @@ function loadOptions() {
 		rateInput.value = options.rate
 		pitchInput.value = options.pitch
 		volumeInput.value = options.volume
+	})
+}
+
+// Load hotkeys from chrome.storage and set inputs in DOM
+function loadHotkeys() {
+	chrome.storage.sync.get(['hotkey1', 'hotkey2', 'hotkey3', 'hotkey4'], (hotkeys) => {
+		console.log(hotkeys)
+		hotkeyLabels.forEach(label => {
+			const input = label.querySelector('input')
+			input.value = hotkeys[input.name]
+		})
 	})
 }
 

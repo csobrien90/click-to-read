@@ -22,9 +22,8 @@ Open the extension's popup page to set/change your hotkey combination and adjust
 
 ## To Do
 
-- Create UX/UI for setting hotkey combination
+- Create UX/UI for customizing hotkey combination
 - Style options page
 - Add floating controls (stop, play/pause, cue of elements to read, etc.)
-- Make icons
 - Flesh out README to be more user-friendly
 - Publish to Chrome Web Store
