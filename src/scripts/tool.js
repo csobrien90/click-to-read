@@ -73,7 +73,7 @@ class Click2ReadTool {
 				} else if (e.target.ariaLabel) {
 					this.speak("An element with the aria label: " + e.target.ariaLabel)
 				} else if (e.target instanceof HTMLInputElement) {
-					this.speak("An input element with the name: " + e.target.name + "and the value: " + e.target.value)
+					this.speak("An input element with the name: " + e.target.name)
 				}
 			}
 		});
