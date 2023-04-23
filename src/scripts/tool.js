@@ -2,6 +2,7 @@ class Click2ReadTool {
 	constructor() {
 		this.keysPressed = {}
 		this.highlightedElement = null
+		this.highlightedElementBackgroundColor = ''
 		this.voices = []
 		this.hotkeys = {
 			hotkey1: 'q',
@@ -28,14 +29,16 @@ class Click2ReadTool {
 			const hoveredElement = document.elementFromPoint(e.clientX, e.clientY)
 			
 			if (this.highlightedElement !== hoveredElement) {
+				this.highlightedElementBackgroundColor = hoveredElement.style.backgroundColor
+
 				hoveredElement.style.backgroundColor = 'rgba(0, 255, 0, 0.5)'
 				hoveredElement.addEventListener('mouseleave', () => {
-					hoveredElement.style.backgroundColor = ''
+					hoveredElement.style.backgroundColor = this.highlightedElementBackgroundColor
 				})
 				if (this.highlightedElement) {
-					this.highlightedElement.style.backgroundColor = 'initial'
+					this.highlightedElement.style.backgroundColor = this.highlightedElementBackgroundColor
 					this.highlightedElement.removeEventListener('mouseleave', () => {
-						this.highlightedElement.style.backgroundColor = ''
+						this.highlightedElement.style.backgroundColor = this.highlightedElementBackgroundColor
 					})
 				}
 				this.highlightedElement = hoveredElement
@@ -59,7 +62,19 @@ class Click2ReadTool {
 		// Core functionality - if hotkeys are pressed, read text of clicked element
 		window.addEventListener('click', (e) => {
 			if (this.keysPressed[this.hotkeys['hotkey1']] && this.keysPressed[this.hotkeys['hotkey2']]) {
-				this.speak(e.target.innerText)
+				e.preventDefault()
+
+				if (e.target.innerText) {
+					this.speak(e.target.innerText)
+				} else if (e.target.alt) {
+					this.speak("An image with alt text reading: " + e.target.alt)
+				} else if (e.target.title) {
+					this.speak("An element with the title: " + e.target.title)
+				} else if (e.target.ariaLabel) {
+					this.speak("An element with the aria label: " + e.target.ariaLabel)
+				} else if (e.target instanceof HTMLInputElement) {
+					this.speak("An input element with the name: " + e.target.name + "and the value: " + e.target.value)
+				}
 			}
 		});
 	}
