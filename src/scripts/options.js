@@ -107,10 +107,14 @@ function displayRefreshNotice(noticeId, formId) {
 	document.querySelector(formId).appendChild(message)
 	message.focus()
 	message.scrollIntoView()
+	message.style.maxHeight = '50px'
 
 	// Remove message after 2 seconds
 	setTimeout(() => {
-		document.querySelector(formId).removeChild(message)
+		message.style.maxHeight = '0px'
+		setTimeout(() => {
+			document.querySelector(formId).removeChild(message)
+		}, 500)
 	}, 2000)
 }
 
@@ -139,9 +143,9 @@ restoreDefaultOptionsButton.addEventListener('click', restoreDefaultOptions)
 function restoreDefaultOptions() {
 	const defaultOptions = {
 		voice: 'default',
-		rate: 2,
-		pitch: 1.5,
-		volume: .8
+		rate: 1,
+		pitch: 1,
+		volume: .6
 	}
 
 	chrome.storage.sync.set(defaultOptions, () => {

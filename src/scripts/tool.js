@@ -80,29 +80,35 @@ class Click2ReadTool {
 	}
 
 	async speak(text) {
-		if ('speechSynthesis' in window) {
-			// Create an utterance object
-			const synthesis = window.speechSynthesis;
-			const utterance = new SpeechSynthesisUtterance(text);
+		try {
+			if ('speechSynthesis' in window) {
+				// Create an utterance object
+				const synthesis = window.speechSynthesis;
+				const utterance = new SpeechSynthesisUtterance(text);
 
-			// Get voices
-			if (this.voices.length === 0) {
-				synthesis.onvoiceschanged = () => {this.voices = synthesis.getVoices()}
+				// Get voices
+				if (this.voices.length === 0) {
+					synthesis.onvoiceschanged = () => {
+						this.voices = synthesis.getVoices()
+					}
+				}
+	
+				// Set utterance properties
+				chrome.storage.sync.get(['voice', 'rate', 'pitch', 'volume'], (options) => {
+					utterance.rate = options.rate
+					utterance.pitch = options.pitch
+					utterance.volume = options.volume
+					utterance.voice = this.voices.find(voice => voice.name === options.voice)
+
+ 					// Speak the utterance
+					synthesis.speak(utterance);
+				})
+	
+			} else {
+				console.log('Text-to-speech not supported.');
 			}
-
-			// Set utterance properties
-			chrome.storage.sync.get(['voice', 'rate', 'pitch', 'volume'], (options) => {
-				utterance.rate = options.rate
-				utterance.pitch = options.pitch
-				utterance.volume = options.volume
-				utterance.voice = this.voices.find(voice => voice.name === options.voice)
-
-				// Speak the utterance
-				synthesis.speak(utterance);
-			})
-
-		} else {
-			console.log('Text-to-speech not supported.');
+		} catch (error) {
+			console.error('Wild ERROR has appeared!' + error)
 		}
 	}
 
