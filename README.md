@@ -28,13 +28,17 @@ Open the extension's popup page to set/change your hotkey combination and adjust
 
 ### Short Term
 
-- Add option to customize hovered element highlight styles
 - Finesse style on options page
+- Add appearance settings (dark mode, highlight color, etc.)
 - Add garbage collection to clean up old event listeners?
+- Convert to TypeScript
+- Add more comments
 - Flesh out README to be more user-friendly
 - Publish to Chrome Web Store
 
 ### Long Term
 
 - Add more human voices - paid-tier premium voices?
+- Add tests
 - Add floating toolbar during speech for playback/playlist controls
+- Better handle batches for elements with lots of children

@@ -27,7 +27,8 @@ class Click2ReadTool {
 			if (!this.keysPressed[this.hotkeys['hotkey1']] || !this.keysPressed[this.hotkeys['hotkey2']] || !this.keysPressed[this.hotkeys['hotkey3']]) return
 			
 			const hoveredElement = document.elementFromPoint(e.clientX, e.clientY)
-			
+			if (!hoveredElement) return
+
 			if (this.highlightedElement !== hoveredElement) {
 				this.highlightedElementBackgroundColor = hoveredElement.style.backgroundColor
 
@@ -64,35 +65,51 @@ class Click2ReadTool {
 			if (this.keysPressed[this.hotkeys['hotkey1']] && this.keysPressed[this.hotkeys['hotkey2']]) {
 				e.preventDefault()
 
-				if (e.target.innerText) {
-					this.speak(e.target.innerText)
-				} else if (e.target.alt) {
-					this.speak("An image with alt text reading: " + e.target.alt)
-				} else if (e.target.title) {
-					this.speak("An element with the title: " + e.target.title)
-				} else if (e.target.ariaLabel) {
-					this.speak("An element with the aria label: " + e.target.ariaLabel)
-				} else if (e.target instanceof HTMLInputElement) {
-					this.speak("An input element with the name: " + e.target.name)
+				// If clicked element has many children, loop through them and read them all
+				if (e.target.children.length > 20) {
+					const children = Array.from(e.target.children)
+					children.forEach(child => this.determineWhatToRead(child))
+				} else {
+					// If clicked element has no children, read it
+					this.determineWhatToRead(e.target)
 				}
 			}
 		});
+
+		// Get voices
+		const voicePromise = new Promise((resolve) => {
+			const synth = window.speechSynthesis
+			const id = setInterval(() => {
+				const voices = synth.getVoices()
+				if (voices.length !== 0) {
+					clearInterval(id)
+					resolve(voices)
+				}
+			}, 10)
+		})
+
+		voicePromise.then((voices) => {
+			this.setVoices(voices)
+		})
 	}
 
-	async speak(text) {
+
+	/*
+	---------------------------
+	|	    Functions		  |
+	---------------------------
+	*/
+
+	async readAloud(text) {
 		try {
 			if ('speechSynthesis' in window) {
-				// Create an utterance object
+				// Cancel any current speech
 				const synthesis = window.speechSynthesis;
+				synthesis.cancel()
+				
+				// Create an utterance object
 				const utterance = new SpeechSynthesisUtterance(text);
 
-				// Get voices
-				if (this.voices.length === 0) {
-					synthesis.onvoiceschanged = () => {
-						this.voices = synthesis.getVoices()
-					}
-				}
-	
 				// Set utterance properties
 				chrome.storage.sync.get(['voice', 'rate', 'pitch', 'volume'], (options) => {
 					utterance.rate = options.rate
@@ -134,7 +151,6 @@ class Click2ReadTool {
 				storedKeys.hasOwnProperty('hotkey2') && 
 				storedKeys.hasOwnProperty('hotkey3') && 
 				storedKeys.hasOwnProperty('hotkey4')) {
-					console.log('Click2Read hotkeys loaded')
 					this.setHotkeys(storedKeys)
 			} else {
 				chrome.storage.sync.set(defaultHotkeys, () => {
@@ -142,6 +158,28 @@ class Click2ReadTool {
 				})
 			}
 		})
+	}
+
+	setVoices(voices) {
+		this.voices = voices
+	}
+
+	getVoices() {
+		return this.voices
+	}
+
+	determineWhatToRead(element) {
+		if (element.innerText) {
+			this.readAloud(element.innerText)
+		} else if (element.alt) {
+			this.readAloud("An image with alt text reading: " + element.alt)
+		} else if (element.title) {
+			this.readAloud("An element with the title: " + element.title)
+		} else if (element.ariaLabel) {
+			this.readAloud("An element with the aria label: " + element.ariaLabel)
+		} else if (element instanceof HTMLInputElement) {
+			this.readAloud("An input element with the name: " + element.name)
+		}
 	}
 }
 
