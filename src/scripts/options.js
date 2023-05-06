@@ -6,6 +6,26 @@ const pitchInput = document.querySelector('input[name="pitch"]')
 const volumeInput = document.querySelector('input[name="volume"]')
 const testVoiceButton = document.querySelector('#testVoice')
 const restoreDefaultOptionsButton = document.querySelector('#restoreSettings')
+const navButtons = Array.from(document.querySelectorAll('nav button'))
+
+// Add event listeners to nav buttons
+navButtons.forEach(button => {
+	button.addEventListener('click', () => {
+		// Remove active class from all buttons
+		navButtons.forEach(button => button.classList.remove('active'))
+
+		// Add active class to clicked button
+		button.classList.add('active')
+
+		// Hide all forms
+		const forms = Array.from(document.querySelectorAll('form'))
+		forms.forEach(form => form.classList.remove('active'))
+
+		// Show form corresponding to clicked button
+		const form = document.querySelector(`#${button.dataset.formid}`)
+		form.classList.add('active')
+	})
+})
 
 let voices = []
 
