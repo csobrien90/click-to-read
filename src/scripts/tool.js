@@ -68,10 +68,12 @@ class Click2ReadTool {
 				// If clicked element has many children, loop through them and read them all
 				if (e.target.children.length > 20) {
 					const children = Array.from(e.target.children)
-					children.forEach(child => this.determineWhatToRead(child))
+					const childrenText = children.map(child => this.determineWhatToRead(child))
+					childrenText.forEach(text => this.readAloud(text))
 				} else {
 					// If clicked element has no children, read it
-					this.determineWhatToRead(e.target)
+					this.readAloud(this.determineWhatToRead(e.target))
+					console.log('here', this.determineWhatToRead(e.target))
 				}
 			}
 		});
@@ -91,6 +93,16 @@ class Click2ReadTool {
 		voicePromise.then((voices) => {
 			this.setVoices(voices)
 		})
+
+		// Continue reading long text
+		let r = setInterval(() => {
+			console.log('reading', speechSynthesis.speaking)
+			if (!speechSynthesis.speaking) {
+				clearInterval(r);
+			} else {
+				speechSynthesis.resume();
+			}
+		}, 14000);
 	}
 
 
@@ -170,15 +182,17 @@ class Click2ReadTool {
 
 	determineWhatToRead(element) {
 		if (element.innerText) {
-			this.readAloud(element.innerText)
+			return element.innerText
 		} else if (element.alt) {
-			this.readAloud("An image with alt text reading: " + element.alt)
+			return "An image with alt text reading: " + element.alt
 		} else if (element.title) {
-			this.readAloud("An element with the title: " + element.title)
+			return "An element with the title: " + element.title
 		} else if (element.ariaLabel) {
-			this.readAloud("An element with the aria label: " + element.ariaLabel)
+			return "An element with the aria label: " + element.ariaLabel
 		} else if (element instanceof HTMLInputElement) {
-			this.readAloud("An input element with the name: " + element.name)
+			return "An input element with the name: " + element.name
+		} else {
+			return ""
 		}
 	}
 }

@@ -41,4 +41,3 @@ Open the extension's popup page to set/change your hotkey combination and adjust
 - Add more human voices - paid-tier premium voices?
 - Add tests
 - Add floating toolbar during speech for playback/playlist controls
-- Better handle batches for elements with lots of children
