@@ -68,8 +68,9 @@ class Click2ReadTool {
 				// If clicked element has many children, loop through them and read them all
 				if (e.target.children.length > 20) {
 					const children = Array.from(e.target.children)
-					const childrenText = children.map(child => this.determineWhatToRead(child))
-					childrenText.forEach(text => this.readAloud(text))
+					children.forEach(child => {
+						this.readAloud(this.determineWhatToRead(child))
+					})
 				} else {
 					// If clicked element has no children, read it
 					this.readAloud(this.determineWhatToRead(e.target))
@@ -100,6 +101,7 @@ class Click2ReadTool {
 			if (!speechSynthesis.speaking) {
 				clearInterval(r);
 			} else {
+				speechSynthesis.pause();
 				speechSynthesis.resume();
 			}
 		}, 14000);
