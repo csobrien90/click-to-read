@@ -28,16 +28,25 @@ Open the extension's popup page to set/change your hotkey combination and adjust
 
 ### Short Term
 
-- Finesse style on options page
 - Add appearance settings (dark mode, highlight color, etc.)
 - Add garbage collection to clean up old event listeners?
 - Convert to TypeScript
 - Add more comments
 - Flesh out README to be more user-friendly
-- Publish to Chrome Web Store
+
+#### Finesse style on options page
+
+- Make inputs and buttons look more like keyboard keys
+- Customize select dropdown and color picker
+- Make color mode a light switch
+- Make voice settings knobs
+
+#### Make accessible
+
 
 ### Long Term
 
+- Publish to Chrome Web Store
 - Add more human voices - paid-tier premium voices?
 - Add tests
 - Add floating toolbar during speech for playback/playlist controls

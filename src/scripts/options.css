@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Fira Code', monospace;
+	font-weight: lighter;
+	overflow: hidden;
+}
+
+:root {
+	--black: #222831;
+	--gray: #393E46;
+	--teal: #00ADB5;
+	--turq: #00FFF5;
+
+	font-size: 10px;
+}
+
+p, label, input {
+	font-size: 1.8em;
+	line-height: 1.5em;
+}
+
+h1 {
+	padding: 20px 10px;
+	font-size: 4em;
+	font-weight: bold;
+	color: var(--turq);
+}
+
+html {
+	background-color: var(--black);
+	color: white;
+	width: 600px;
+	height: 500px;
+}
+body {
+	width: 600px;
+	margin: 0;
+}
+#popup-header {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 2em;
+	margin-bottom: 1em;
+	padding: 1em 2em;
+}
+img {
+	width: 72px;
+	height: 72px;
+	border-radius: 50%;
+}
+#form-wrapper {
+	position: relative;
+	display: grid;
+	gap: 20px;
+	width: 100%;
+	height: 400px;
+	background-color: var(--gray);
+}
+form {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	padding: 2em 4em;
+	display: none;
+	background-color: var(--gray);
+}
+form.active {
+	display: grid;
+}
+label {
+	font-weight: bold;
+}
+#options-refresh-notice, #hotkey-refresh-notice {
+	margin: 0;
+	padding: 0;
+	max-height: 0px;
+	overflow: hidden;
+	transition: max-height 0.5s ease-in-out;
+}
+button {
+	background-color: transparent;
+	color: var(--teal);
+	border: none;
+	font-size: 2em;
+	font-weight: bold;
+	padding: 1em;
+	cursor: pointer;
+}
+button.active {
+	background-color: var(--gray);
+	color: var(--turq);
+	cursor: default;
+}
+nav button {
+	border-radius: 0 .3em 0 0;
+}
+.sr-only {
+	border: 0 !important;
+	clip: rect(1px, 1px, 1px, 1px) !important;
+	-webkit-clip-path: inset(50%) !important;
+	clip-path: inset(50%) !important;
+	height: 1px !important;
+	overflow: hidden !important;
+	margin: -1px !important;
+	padding: 0 !important;
+	position: absolute !important;
+	width: 1px !important;
+	white-space: nowrap !important;
+}
+input {
+	background: rgba(255, 255, 255, .2);
+	border: none;
+	color: white;
+	font-weight: 400;
+	padding: .6em 1.6em;
+	border-radius: 2em;
+	width: 10em;
+	box-shadow: 0 0 .1em .1em #FFFFFF50;
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+select {
+	background: rgba(255, 255, 255, .2);
+	border: none;
+	color: white;
+	font-weight: 400;
+	padding: .6em 1.6em;
+	border-radius: 2em;
+	box-shadow: 0 0 .1em .1em #FFFFFF50;
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+option {
+	background-color: var(--gray);
+	line-height: 1.5em;
+}
+
+fieldset {
+	border: none;
+	width: 100%;
+	display: grid;
+	gap: 2em;
+	align-items: center;
+}
+
+/*
+----------------------
+|   Hotkey Settings  |
+----------------------
+*/
+
+#hotkeySettings {
+	gap: 3em;
+	align-items: center;
+}
+
+#hotkeySettings fieldset {
+	grid-template-columns: 12em 1fr;
+}
+
+#hotkeySettings fieldset p {
+	grid-column: 1 / -1;
+}
+#hotkeySettings fieldset label {
+	text-align: right;
+}
+
+/*
+-----------------------
+|    Voice Settings   |
+-----------------------
+*/
+
+#voiceSettings {
+	gap: 3em;
+	align-items: center;
+}
+
+#voiceSettings fieldset {
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+#voiceSettings fieldset:first-of-type {
+	grid-template-columns: 1fr;
+}
+
+#voiceSettings fieldset span {
+	display: grid;
+	justify-items: center;
+	text-align: center;
+	gap: 2em;
+}
+
+#voiceSettings #button-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 2em;
+	padding: 2em .5em;
+}
+
+#voiceSettings #button-wrapper button {
+	box-shadow: 0 0 0 .1em var(--turq);
+	border-radius: 2em;
+	transition: transform .3s cubic-bezier(.5,2.5,.7,.7), box-shadow .3s cubic-bezier(.5,2.5,.7,.7);
+}
+
+#voiceSettings #button-wrapper button:hover {
+	box-shadow: 0 0 0 .1em var(--turq), 0 .4em 0 0 var(--turq);
+	transform: translateY(-.4em);
+}
+
+/*
+-----------------------
+| Appearance Settings |
+-----------------------
+*/
+
+#appearanceSettings {
+	gap: 3em;
+	grid-template-columns: 1fr 1fr;
+	align-items: center;
+}

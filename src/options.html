@@ -4,117 +4,76 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Click2Read Options</title>
-		<style>
-			html {
-				background-color: black;
-				color: white;
-				width: 600px;
-				height: 400px;
-			}
-			body {
-				width: 600px;
-				padding: 10px;
-			}
-			#popup-header {
-				display: flex;
-				align-items: center;
-				justify-content: flex-start;
-				gap: 20px;
-				margin-bottom: 10px;
-			}
-			img {
-				width: 72px;
-				height: 72px;
-				border-radius: 50%;
-			}
-			#form-wrapper {
-				position: relative;
-				display: grid;
-				gap: 20px;
-				width: 100%;
-				height: 100%;
-			}
-			form {
-				position: absolute;
-				display: grid;
-				gap: 10px;
-				width: 450px;
-				height: 300px;
-				padding: 20px;
-				background-color: black;
-				z-index: 1;
-			}
-			form.active {
-				z-index: 2;
-			}
-			label {
-				font-weight: bold;
-			}
-			#options-refresh-notice, #hotkey-refresh-notice {
-				margin: 0;
-				padding: 0;
-				max-height: 0px;
-				overflow: hidden;
-				transition: max-height 0.5s ease-in-out;
-			}
-		</style>
+		<title>Click2Read Settings</title>
+		<link rel="stylesheet" href="scripts/options.css">
 	</head>
 
 	<body>
-		<header id="popup-header">
-			<img src="icons/icon128.png" alt="Click2Read Logo">
-			<h1>Click2Read Browser Extension</h1>
-		</header>
+		<h1>Click2Read Settings</h1>
 		<nav>
-			<button type="button" id="hotkeySettingsButton" class="active" data-formid="hotkeySettings">Hotkey Settings</button>
-			<button type="button" id="voiceSettingsButton" data-formid="voiceSettings">Voice Settings</button>
+			<button type="button" id="hotkeySettingsButton" class="active" data-formid="hotkeySettings">Hotkeys</button>
+			<button type="button" id="voiceSettingsButton" data-formid="voiceSettings">Voice</button>
+			<button type="button" id="appearanceSettingsButton" data-formid="appearanceSettings">Appearance</button>
 		</nav>
 		<div id="form-wrapper">
 			<form id="hotkeySettings" class="active">
-				<header>
-					<h2>Hotkey Settings</h2>
-					<p>To read element, hold hotkeys 1 and 2 together and click. Add the Highlight key to highlight hovered elements before clicking to read. Or, add the Stop key to interupt current playback.</p>
-				</header>
-				<label for="hotkey1">
-					Hotkey 1
+				<h2 class="sr-only">Hotkey Settings</h2>
+				<fieldset>
+					<p>To read an element, hold hotkeys 1 and 2 together and click.</p>
+					<label for="hotkey1">Hotkey 1</label>
 					<input type="text" name="hotkey1" value="q" disabled>
-				</label>
-				<label for="hotkey2">
-					Hotkey 2
+					<label for="hotkey2">Hotkey 2</label>
 					<input type="text" name="hotkey2" value="w" disabled>
-				</label>
-				<label for="hotkey3">
-					Highlight Hotkey
+				</fieldset>
+				<fieldset>
+					<p>Add Highlight key to identify hovered elements before clicking.</p>
+					<label for="hotkey3">Highlight</label>
 					<input type="text" name="hotkey3" value="e" disabled>
-				</label>
-				<label for="hotkey4">
-					Stop Hotkey
+				</fieldset>
+				<fieldset>
+					<p>Or, add the Stop key to interupt current playback.</p>
+					<label for="hotkey4">Stop</label>
 					<input type="text" name="hotkey4" value="r" disabled>
-				</label>
+				</fieldset>
 			</form>
 			<form id="voiceSettings">
-				<h2>Voice Settings</h2>
-				<label for="voice">
-					Voice
+				<h2  class="sr-only">Voice Settings</h2>
+				<fieldset>
+					<label for="voice">Voice</label>
 					<select name="voice"></select>
-				</label>
-				<label for="pitch">
-					Pitch
-					<input type="number" name="pitch" min="0" max="10" step="0.1" value="1.5">
-				</label>
-				<label for="rate">
-					Rate
-					<input type="number" name="rate" min="0" max="10" step="0.1" value="2">
-				</label>
-				<label for="volume">
-					Volume
-					<input type="number" name="volume" min="0" max="1" step="0.1" value=".8">
-				</label>
+				</fieldset>
+				<fieldset>
+					<span>
+						<input type="number" name="pitch" min="0" max="10" step="0.1" value="1.5">
+						<label for="pitch">Pitch</label>
+					</span>
+					<span>
+						<input type="number" name="rate" min="0" max="10" step="0.1" value="2">
+						<label for="rate">Rate</label>
+					</span>
+					<span>
+						<input type="number" name="volume" min="0" max="1" step="0.1" value=".8">
+						<label for="volume">Volume</label>
+					</span>
+				</fieldset>
 				<div id="button-wrapper">
 					<button type="button" id="testVoice">Test Voice</button>
 					<button type="button" id="restoreSettings">Restore Default Settings</button>
 				</div>
+			</form>
+			<form id="appearanceSettings">
+				<h2  class="sr-only">Appearance Settings</h2>
+				<fieldset>
+					<label for="highlightColor">Highlight Color</label>
+					<input type="color" name="highlightColor" value="#00ff00">
+				</fieldset>
+				<fieldset>
+					<label for="theme">Theme</label>
+					<select name="theme">
+						<option value="light">Light</option>
+						<option value="dark">Dark</option>
+					</select>
+				</fieldset>
 			</form>
 		</div>
 	</body>
