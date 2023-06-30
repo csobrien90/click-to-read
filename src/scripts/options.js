@@ -4,6 +4,7 @@ const voiceSelect = document.querySelector('select[name="voice"]')
 const rateInput = document.querySelector('input[name="rate"]')
 const pitchInput = document.querySelector('input[name="pitch"]')
 const volumeInput = document.querySelector('input[name="volume"]')
+const highlightColorInput = document.querySelector('input[name="highlightColor"]')
 const testVoiceButton = document.querySelector('#testVoice')
 const restoreDefaultOptionsButton = document.querySelector('#restoreSettings')
 const navButtons = Array.from(document.querySelectorAll('nav button'))
@@ -52,6 +53,7 @@ hotkeyLabels.forEach(label => {
 		const input = label.querySelector('input')
 		const previousHotkey = input.value
 		input.value = ''
+
 		window.addEventListener('keydown', (e) => {
 			// Prevent default behavior of hotkey
 			e.preventDefault()
@@ -89,6 +91,7 @@ voiceSelect.addEventListener('change', saveOptions)
 rateInput.addEventListener('change', saveOptions)
 pitchInput.addEventListener('change', saveOptions)
 volumeInput.addEventListener('change', saveOptions)
+highlightColorInput.addEventListener('change', saveOptions)
 
 // Save options to chrome.storage
 function saveOptions() {
@@ -96,10 +99,11 @@ function saveOptions() {
 		voice: voiceSelect.value,
 		rate: rateInput.value,
 		pitch: pitchInput.value,
-		volume: volumeInput.value
+		volume: volumeInput.value,
+		highlightColor: highlightColorInput.value
 	}
 	chrome.storage.sync.set(options, () => {
-		console.log('Click2Read options saved')
+		console.info('Click2Read options saved')
 	})
 
 	if (document.querySelector('#options-refresh-notice')) return
@@ -110,7 +114,7 @@ function saveOptions() {
 // Save hotkeys to chrome.storage
 function saveHotkeys(key, value) {
 	chrome.storage.sync.set({[key]: value}, () => {
-		console.log('Click2Read hotkeys saved')
+		console.info('Click2Read hotkeys saved')
 	})
 	
 	if (document.querySelector('#hotkey-refresh-notice')) return
@@ -140,11 +144,12 @@ function displayRefreshNotice(noticeId, formId) {
 
 // Load options from chrome.storage and set inputs in DOM
 function loadOptions() {
-	chrome.storage.sync.get(['voice', 'rate', 'pitch', 'volume'], (options) => {
+	chrome.storage.sync.get(['voice', 'rate', 'pitch', 'volume', 'highlightColor'], (options) => {
 		voiceSelect.value = options.voice
 		rateInput.value = options.rate
 		pitchInput.value = options.pitch
 		volumeInput.value = options.volume
+		highlightColorInput.value = options.highlightColor
 	})
 }
 
@@ -165,11 +170,12 @@ function restoreDefaultOptions() {
 		voice: 'default',
 		rate: 1,
 		pitch: 1,
-		volume: .6
+		volume: .6,
+		highlightColor: '#00ff00'
 	}
 
 	chrome.storage.sync.set(defaultOptions, () => {
-		console.log('Click2Read options restored')
+		console.info('Click2Read options restored')
 		loadOptions()
 	})
 }

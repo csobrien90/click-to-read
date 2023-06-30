@@ -20,40 +20,50 @@
 				<h2 class="sr-only">Hotkey Settings</h2>
 				<fieldset>
 					<p>To read an element, hold hotkeys 1 and 2 together and click.</p>
-					<label for="hotkey1">Hotkey 1</label>
-					<input type="text" name="hotkey1" value="q" disabled>
-					<label for="hotkey2">Hotkey 2</label>
-					<input type="text" name="hotkey2" value="w" disabled>
+					<label for="hotkey1">
+						<span class="label-text">Hotkey 1</span>
+						<input type="text" name="hotkey1" value="q" disabled>
+					</label>
+					<label for="hotkey2">
+						<span class="label-text">Hotkey 2</span>
+						<input type="text" name="hotkey2" value="w" disabled>
+					</label>
 				</fieldset>
 				<fieldset>
 					<p>Add Highlight key to identify hovered elements before clicking.</p>
-					<label for="hotkey3">Highlight</label>
-					<input type="text" name="hotkey3" value="e" disabled>
+					<label for="hotkey3">
+						<span class="label-text">Highlight</span>
+						<input type="text" name="hotkey3" value="e" disabled>
+					</label>
 				</fieldset>
 				<fieldset>
 					<p>Or, add the Stop key to interupt current playback.</p>
-					<label for="hotkey4">Stop</label>
-					<input type="text" name="hotkey4" value="r" disabled>
+					<label for="hotkey4">
+						<span class="label-text">Stop</span>
+						<input type="text" name="hotkey4" value="r" disabled>
+					</label>
 				</fieldset>
 			</form>
 			<form id="voiceSettings">
 				<h2  class="sr-only">Voice Settings</h2>
 				<fieldset>
-					<label for="voice">Voice</label>
-					<select name="voice"></select>
+					<label for="voice"><span class="label-text">Voice</span></label>
+					<div id="select-wrapper">
+						<select name="voice"></select>
+					</div>
 				</fieldset>
 				<fieldset>
 					<span>
 						<input type="number" name="pitch" min="0" max="10" step="0.1" value="1.5">
-						<label for="pitch">Pitch</label>
+						<label for="pitch"><span class="label-text">Pitch</span></label>
 					</span>
 					<span>
 						<input type="number" name="rate" min="0" max="10" step="0.1" value="2">
-						<label for="rate">Rate</label>
+						<label for="rate"><span class="label-text">Rate</span></label>
 					</span>
 					<span>
 						<input type="number" name="volume" min="0" max="1" step="0.1" value=".8">
-						<label for="volume">Volume</label>
+						<label for="volume"><span class="label-text">Volume</span></label>
 					</span>
 				</fieldset>
 				<div id="button-wrapper">
@@ -64,15 +74,12 @@
 			<form id="appearanceSettings">
 				<h2  class="sr-only">Appearance Settings</h2>
 				<fieldset>
-					<label for="highlightColor">Highlight Color</label>
+					<label for="highlightColor"><span class="label-text">Highlight Color</span></label>
 					<input type="color" name="highlightColor" value="#00ff00">
 				</fieldset>
 				<fieldset>
-					<label for="theme">Theme</label>
-					<select name="theme">
-						<option value="light">Light</option>
-						<option value="dark">Dark</option>
-					</select>
+					<label for="theme"><span class="label-text">Theme</span></label>
+					<input type="checkbox" name="theme">
 				</fieldset>
 			</form>
 		</div>

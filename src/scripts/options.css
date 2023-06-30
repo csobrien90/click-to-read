@@ -6,7 +6,6 @@
 	box-sizing: border-box;
 	font-family: 'Fira Code', monospace;
 	font-weight: lighter;
-	overflow: hidden;
 }
 
 :root {
@@ -18,9 +17,13 @@
 	font-size: 10px;
 }
 
-p, label, input {
+p, input {
 	font-size: 1.8em;
 	line-height: 1.5em;
+}
+
+.label-text {
+	font-size: 1.8em;
 }
 
 h1 {
@@ -35,6 +38,7 @@ html {
 	color: white;
 	width: 600px;
 	height: 500px;
+	overflow: hidden;
 }
 body {
 	width: 600px;
@@ -162,14 +166,18 @@ fieldset {
 }
 
 #hotkeySettings fieldset {
-	grid-template-columns: 12em 1fr;
+	grid-template-columns: 1fr 1fr;
+	justify-items: start;
 }
 
 #hotkeySettings fieldset p {
 	grid-column: 1 / -1;
 }
 #hotkeySettings fieldset label {
-	text-align: right;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	gap: 2em;
 }
 
 /*
@@ -181,6 +189,50 @@ fieldset {
 #voiceSettings {
 	gap: 3em;
 	align-items: center;
+}
+
+#voiceSettings #select-wrapper {
+	position: relative;
+	width: fit-content;
+}
+
+#voiceSettings #select-wrapper::after {
+	content: '';
+	position: absolute;
+	right: 16px;
+	width: 2px;
+	height:2px;
+	top: 50%;
+	border: solid var(--turq);
+	border-width: 0 3px 3px 0;
+	display: inline-block;
+	padding: 4px;
+	transform: translateY(calc(-50% - 3px)) rotate(45deg);
+}
+
+#voiceSettings select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	scrollbar-color: var(--turq) var(--gray);
+	scrollbar-width: thin;
+}
+
+#voiceSettings select::-webkit-scrollbar {
+	width: 10px;
+	background-color: var(--black);
+}
+
+#voiceSettings select::-webkit-scrollbar-track {
+	background-color: var(--black);
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+	border-radius: 10px;
+}
+
+#voiceSettings select::-webkit-scrollbar-thumb {
+	background-color: var(--turq);
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
 
 #voiceSettings fieldset {

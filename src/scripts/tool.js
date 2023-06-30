@@ -2,7 +2,7 @@ class Click2ReadTool {
 	constructor() {
 		this.keysPressed = {}
 		this.highlightedElement = null
-		this.highlightedElementBackgroundColor = ''
+		this.highlightColor = ''
 		this.voices = []
 		this.hotkeys = {
 			hotkey1: 'q',
@@ -16,6 +16,11 @@ class Click2ReadTool {
 		// Load hotkeys and options from storage
 		this.loadHotkeys()
 
+		// Get stored highlight color
+		chrome.storage.sync.get(['highlightColor'], (options) => {
+			this.highlightColor = options.highlightColor + 'bb' || '#00ff00bb'
+		})
+
 		/*
 		---------------------------
 		|     Event Listeners     |
@@ -26,22 +31,26 @@ class Click2ReadTool {
 		window.addEventListener('mousemove', (e) => {
 			if (!this.keysPressed[this.hotkeys['hotkey1']] || !this.keysPressed[this.hotkeys['hotkey2']] || !this.keysPressed[this.hotkeys['hotkey3']]) return
 			
-			const hoveredElement = document.elementFromPoint(e.clientX, e.clientY)
+			const hoveredElement = e.target
 			if (!hoveredElement) return
 
 			if (this.highlightedElement !== hoveredElement) {
-				this.highlightedElementBackgroundColor = hoveredElement.style.backgroundColor
-
-				hoveredElement.style.backgroundColor = 'rgba(0, 255, 0, 0.5)'
-				hoveredElement.addEventListener('mouseleave', () => {
-					hoveredElement.style.backgroundColor = this.highlightedElementBackgroundColor
-				})
-				if (this.highlightedElement) {
-					this.highlightedElement.style.backgroundColor = this.highlightedElementBackgroundColor
-					this.highlightedElement.removeEventListener('mouseleave', () => {
-						this.highlightedElement.style.backgroundColor = this.highlightedElementBackgroundColor
-					})
+				// Store original background color to restore on mouse leave
+				let originalBackgroundColor
+				if (hoveredElement.style.backgroundColor && hoveredElement.style.backgroundColor !== this.convertHexToRgbA(this.highlightColor)) {
+					originalBackgroundColor = hoveredElement.style.backgroundColor
+				} else {
+					originalBackgroundColor = ''
 				}
+
+				// Highlight hovered element
+				hoveredElement.style.backgroundColor = this.highlightColor
+
+				// Restore original background color on mouse leave
+				hoveredElement.addEventListener('mouseout', () => {
+					hoveredElement.style.backgroundColor = originalBackgroundColor
+				}, { once: true })
+
 				this.highlightedElement = hoveredElement
 			}
 		});
@@ -56,6 +65,7 @@ class Click2ReadTool {
 			}
 		})
 
+		// Track released keys
 		window.addEventListener('keyup', (e) => {
 			this.keysPressed[e.key] = false
 		})
@@ -74,7 +84,6 @@ class Click2ReadTool {
 				} else {
 					// If clicked element has no children, read it
 					this.readAloud(this.determineWhatToRead(e.target))
-					console.log('here', this.determineWhatToRead(e.target))
 				}
 			}
 		});
@@ -95,9 +104,8 @@ class Click2ReadTool {
 			this.setVoices(voices)
 		})
 
-		// Continue reading long text
+		// Continue reading long text - this is a known workaround for a bug in Chrome
 		let r = setInterval(() => {
-			console.log('reading', speechSynthesis.speaking)
 			if (!speechSynthesis.speaking) {
 				clearInterval(r);
 			} else {
@@ -136,7 +144,7 @@ class Click2ReadTool {
 				})
 	
 			} else {
-				console.log('Text-to-speech not supported.');
+				console.error('Text-to-speech not supported.');
 			}
 		} catch (error) {
 			console.error('Wild ERROR has appeared!' + error)
@@ -158,7 +166,7 @@ class Click2ReadTool {
 		chrome.storage.sync.get(['hotkey1', 'hotkey2', 'hotkey3', 'hotkey4'], (storedKeys) => {
 			if (Object.keys(storedKeys).length === 0) {
 				chrome.storage.sync.set(defaultHotkeys, () => {
-					console.log('Click2Read hotkeys set to default')
+					console.info('Click2Read hotkeys set to default')
 				})
 			} else if (
 				storedKeys.hasOwnProperty('hotkey1') && 
@@ -168,7 +176,7 @@ class Click2ReadTool {
 					this.setHotkeys(storedKeys)
 			} else {
 				chrome.storage.sync.set(defaultHotkeys, () => {
-					console.log('Click2Read hotkeys set to default')
+					console.info('Click2Read hotkeys set to default')
 				})
 			}
 		})
@@ -195,6 +203,27 @@ class Click2ReadTool {
 			return "An input element with the name: " + element.name
 		} else {
 			return ""
+		}
+	}
+
+	convertHexToRgbA(hexVal) {
+		var ret;
+		  
+		// If the hex value is valid.
+		if(/^#([A-Fa-f0-9]{8})$/.test(hexVal)) {
+			ret = hexVal.slice(1);
+
+			// Convert the hex value to an array of decimal values.
+			ret = ret.match(/.{2}/g);
+			ret.pop();
+			ret = ret.map(function(hex) {
+				return parseInt(hex, 16);
+			});
+
+			// Add the alpha value
+			ret.push(0.733);
+
+			return 'rgba(' + ret.join(', ') + ')';
 		}
 	}
 }
