@@ -9,7 +9,9 @@
 	</head>
 
 	<body>
-		<h1>Click2Read Settings</h1>
+		<header id="main-header">
+			<h1>Click2Read Settings</h1>
+		</header>
 		<nav>
 			<button type="button" id="hotkeySettingsButton" class="active" data-formid="hotkeySettings">Hotkeys</button>
 			<button type="button" id="voiceSettingsButton" data-formid="voiceSettings">Voice</button>
@@ -74,12 +76,16 @@
 			<form id="appearanceSettings">
 				<h2  class="sr-only">Appearance Settings</h2>
 				<fieldset>
-					<label for="highlightColor"><span class="label-text">Highlight Color</span></label>
-					<input type="color" name="highlightColor" value="#00ff00">
+					<label for="highlightColor">
+						<span class="label-text">Highlight Color</span>
+						<input type="color" name="highlightColor" value="#00ff00">
+					</label>
 				</fieldset>
 				<fieldset>
-					<label for="theme"><span class="label-text">Theme</span></label>
-					<input type="checkbox" name="theme">
+					<label for="theme">
+						<span class="label-text">Theme</span>
+						<input type="checkbox" name="theme">
+					</label>
 				</fieldset>
 			</form>
 		</div>

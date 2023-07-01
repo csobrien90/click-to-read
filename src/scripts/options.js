@@ -45,6 +45,8 @@ window.speechSynthesis.onvoiceschanged = () => {
 
 	loadOptions()
 	loadHotkeys()
+	loadAppearanceOptions()
+	customizeSelect()
 }
 
 // Listen for changes to hotkey inputs
@@ -91,7 +93,7 @@ voiceSelect.addEventListener('change', saveOptions)
 rateInput.addEventListener('change', saveOptions)
 pitchInput.addEventListener('change', saveOptions)
 volumeInput.addEventListener('change', saveOptions)
-highlightColorInput.addEventListener('change', saveOptions)
+highlightColorInput.addEventListener('change', saveAppearanceOptions)
 
 // Save options to chrome.storage
 function saveOptions() {
@@ -100,16 +102,28 @@ function saveOptions() {
 		rate: rateInput.value,
 		pitch: pitchInput.value,
 		volume: volumeInput.value,
-		highlightColor: highlightColorInput.value
 	}
+
 	chrome.storage.sync.set(options, () => {
 		console.info('Click2Read options saved')
 	})
 
-	if (document.querySelector('#options-refresh-notice')) return
-
-	displayRefreshNotice('options-refresh-notice', '#voiceSettings')
+	displayRefreshNotice()
 }
+
+// Save appearance options to chrome.storage
+function saveAppearanceOptions() {
+	const options = {
+		highlightColor: highlightColorInput.value
+	}
+
+	chrome.storage.sync.set(options, () => {
+		console.info('Click2Read appearance options saved')
+	})
+
+	displayRefreshNotice()
+}
+
 
 // Save hotkeys to chrome.storage
 function saveHotkeys(key, value) {
@@ -117,29 +131,26 @@ function saveHotkeys(key, value) {
 		console.info('Click2Read hotkeys saved')
 	})
 	
-	if (document.querySelector('#hotkey-refresh-notice')) return
-
-	displayRefreshNotice('hotkey-refresh-notice', '#hotkeySettings')
+	displayRefreshNotice()
 }
 
-function displayRefreshNotice(noticeId, formId) {
-	// Display message to user telling them to refresh page
-	const message = document.createElement('p')
-	message.id = noticeId
-	message.innerText = 'Refresh page to apply changes'
-	message.style.fontStyle = 'italic'
-	document.querySelector(formId).appendChild(message)
-	message.focus()
-	message.scrollIntoView()
-	message.style.maxHeight = '50px'
+function displayRefreshNotice() {
+	if (document.querySelector('#refresh-notice')) return
 
-	// Remove message after 2 seconds
-	setTimeout(() => {
-		message.style.maxHeight = '0px'
-		setTimeout(() => {
-			document.querySelector(formId).removeChild(message)
-		}, 500)
-	}, 2000)
+	// Create message to tell user to refresh page
+	const message = document.createElement('p')
+	message.id = "refresh-notice"
+	message.innerText = 'Refresh to see changes'
+
+	// Add event listener to refresh active tab when message is clicked
+	message.addEventListener('click', () => {
+		let queryOptions = { active: true };
+		chrome.tabs.query(queryOptions).then((tabs) => chrome.tabs.reload(tabs[0].id));
+		message.remove()
+	})
+
+	// Append message to DOM
+	document.querySelector('#main-header').appendChild(message)
 }
 
 // Load options from chrome.storage and set inputs in DOM
@@ -149,6 +160,12 @@ function loadOptions() {
 		rateInput.value = options.rate
 		pitchInput.value = options.pitch
 		volumeInput.value = options.volume
+	})
+}
+
+// Load appearance options from chrome.storage and set inputs in DOM
+function loadAppearanceOptions() {
+	chrome.storage.sync.get(['highlightColor'], (options) => {
 		highlightColorInput.value = options.highlightColor
 	})
 }
@@ -177,6 +194,22 @@ function restoreDefaultOptions() {
 	chrome.storage.sync.set(defaultOptions, () => {
 		console.info('Click2Read options restored')
 		loadOptions()
+		loadAppearanceOptions()
+	})
+}
+
+// Customize select element
+function customizeSelect() {
+	voiceSelect.addEventListener('focus', () => {
+		voiceSelect.size = 6
+	})
+
+	voiceSelect.addEventListener('blur', () => {
+		voiceSelect.size = 1
+	})
+
+	voiceSelect.addEventListener('change', () => {
+		voiceSelect.size = 1
 	})
 }
 
