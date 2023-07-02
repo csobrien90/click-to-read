@@ -29,7 +29,6 @@ Open the extension's popup page to set/change your hotkey combination and adjust
 
 ### Finesse style on options page
 
-- Add dark/light modes 🚧
 - Make theme checkbox a light switch
 - Make inputs and buttons look more like keyboard keys and improve hotkey setting UX
 - Make voice settings knobs
