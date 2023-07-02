@@ -29,13 +29,16 @@ Open the extension's popup page to set/change your hotkey combination and adjust
 
 ### Finesse style on options page
 
-- Add dark/light modes
-- Make inputs and buttons look more like keyboard keys and improve hotkey setting UX
-- Customize arrow and color picker UI
+- Add dark/light modes 🚧
 - Make theme checkbox a light switch
+- Make inputs and buttons look more like keyboard keys and improve hotkey setting UX
 - Make voice settings knobs
 
 ### Make accessible
+
+- Programmatically choose highlighted text color to contrast chosen highlight color
+- Options page form (aria values for tabs, all inputs accessible, etc.)
+- Focus styles and screenreader flow
 
 ### Long Term
 

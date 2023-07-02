@@ -5,6 +5,7 @@ const rateInput = document.querySelector('input[name="rate"]')
 const pitchInput = document.querySelector('input[name="pitch"]')
 const volumeInput = document.querySelector('input[name="volume"]')
 const highlightColorInput = document.querySelector('input[name="highlightColor"]')
+const themeSwitch = document.querySelector('input[name="theme"]')
 const testVoiceButton = document.querySelector('#testVoice')
 const restoreDefaultOptionsButton = document.querySelector('#restoreSettings')
 const navButtons = Array.from(document.querySelectorAll('nav button'))
@@ -93,7 +94,8 @@ voiceSelect.addEventListener('change', saveOptions)
 rateInput.addEventListener('change', saveOptions)
 pitchInput.addEventListener('change', saveOptions)
 volumeInput.addEventListener('change', saveOptions)
-highlightColorInput.addEventListener('change', saveAppearanceOptions)
+highlightColorInput.addEventListener('change', () => saveAppearanceOptions())
+themeSwitch.addEventListener('change', () => saveAppearanceOptions(true))
 
 // Save options to chrome.storage
 function saveOptions() {
@@ -112,16 +114,19 @@ function saveOptions() {
 }
 
 // Save appearance options to chrome.storage
-function saveAppearanceOptions() {
+function saveAppearanceOptions(isThemeSwitch=false) {
 	const options = {
-		highlightColor: highlightColorInput.value
+		highlightColor: highlightColorInput.value,
+		theme: themeSwitch.checked ? 'dark' : 'light'
 	}
 
 	chrome.storage.sync.set(options, () => {
 		console.info('Click2Read appearance options saved')
 	})
 
-	displayRefreshNotice()
+	setTheme(options.theme)
+
+	if (!isThemeSwitch) displayRefreshNotice()
 }
 
 
@@ -165,8 +170,10 @@ function loadOptions() {
 
 // Load appearance options from chrome.storage and set inputs in DOM
 function loadAppearanceOptions() {
-	chrome.storage.sync.get(['highlightColor'], (options) => {
+	chrome.storage.sync.get(['highlightColor', 'theme'], (options) => {
 		highlightColorInput.value = options.highlightColor
+		themeSwitch.checked = options.theme === 'dark' ? true : false
+		setTheme(options.theme)
 	})
 }
 
@@ -180,6 +187,10 @@ function loadHotkeys() {
 	})
 }
 
+function setTheme(theme) {
+	document.querySelector('body').classList = theme
+}
+
 // Restore default options
 restoreDefaultOptionsButton.addEventListener('click', restoreDefaultOptions)
 function restoreDefaultOptions() {
@@ -188,7 +199,8 @@ function restoreDefaultOptions() {
 		rate: 1,
 		pitch: 1,
 		volume: .6,
-		highlightColor: '#00ff00'
+		highlightColor: '#00ff00',
+		theme: 'dark'
 	}
 
 	chrome.storage.sync.set(defaultOptions, () => {

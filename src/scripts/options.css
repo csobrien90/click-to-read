@@ -9,13 +9,27 @@
 }
 
 :root {
-	--black: #222831;
-	--gray: #393E46;
-	--md-gray: #666b6c;
-	--teal: #00ADB5;
-	--turq: #00FFF5;
-
 	font-size: 10px;
+}
+
+html:has(body.dark) {
+	--base: #222831;
+	--neutral1: #666b6c;
+	--neutral2: #393E46;
+	--accent1: #00FFF5;
+	--accent2: #00ADB5;
+	--main-text: white;
+	--shadow: black;
+}
+
+html:has(body.light) {
+	--base: #dbedff;
+	--neutral1: #accbff;
+	--neutral2: #f4faff;
+	--accent1: 	#8993ff;
+	--accent2: 	#93acff;
+	--main-text: black;
+	--shadow: #999999;
 }
 
 p, input {
@@ -31,12 +45,12 @@ h1 {
 	padding-left: 10px;
 	font-size: 4em;
 	font-weight: bold;
-	color: var(--turq);
+	color: var(--accent1);
 }
 
 html {
-	background-color: var(--black);
-	color: white;
+	background-color: var(--base);
+	color: var(--main-text);
 	width: 600px;
 	height: 500px;
 	overflow: hidden;
@@ -64,7 +78,7 @@ img {
 	gap: 20px;
 	width: 100%;
 	height: 400px;
-	background-color: var(--gray);
+	background-color: var(--neutral2);
 }
 form {
 	position: absolute;
@@ -72,7 +86,7 @@ form {
 	height: 100%;
 	padding: 2em 4em;
 	display: none;
-	background-color: var(--gray);
+	background-color: var(--neutral2);
 }
 form.active {
 	display: grid;
@@ -83,7 +97,7 @@ label {
 
 button {
 	background-color: transparent;
-	color: var(--teal);
+	color: var(--accent2);
 	border: none;
 	font-size: 2em;
 	font-weight: bold;
@@ -91,8 +105,8 @@ button {
 	cursor: pointer;
 }
 button.active {
-	background-color: var(--gray);
-	color: var(--turq);
+	background-color: var(--neutral2);
+	color: var(--accent1);
 	cursor: default;
 }
 nav button {
@@ -112,9 +126,9 @@ nav button {
 	white-space: nowrap !important;
 }
 input {
-	background: var(--md-gray);
+	background: var(--neutral1);
 	border: none;
-	color: white;
+	color: var(--main-text);
 	font-weight: 400;
 	padding: .6em 1.6em;
 	border-radius: 10px;
@@ -125,9 +139,9 @@ input {
 }
 
 select {
-	background: var(--md-gray);
+	background: var(--neutral1);
 	border: none;
-	color: white;
+	color: var(--main-text);
 	font-weight: 400;
 	border-radius: 10px;
 	box-shadow: 0 0 .1em .1em #FFFFFF50;
@@ -148,7 +162,7 @@ option {
 }
 
 option:hover, option:focus, option:active {
-	background-color: var(--teal);
+	background-color: var(--accent2);
 }
 
 fieldset {
@@ -176,7 +190,7 @@ fieldset {
 
 #refresh-notice:hover {
 	text-decoration: underline;
-	color: var(--turq);
+	color: var(--accent1);
 }
 
 /*
@@ -229,7 +243,7 @@ fieldset {
 	width: 2px;
 	height:2px;
 	top: 50%;
-	border: solid var(--turq);
+	border: solid var(--accent1);
 	border-width: 0 3px 3px 0;
 	display: inline-block;
 	padding: 4px;
@@ -244,22 +258,21 @@ fieldset {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
-	scrollbar-color: var(--turq) var(--gray);
+	scrollbar-color: var(--accent1) var(--neutral2);
 	scrollbar-width: thin;
 }
 
 #voiceSettings select::-webkit-scrollbar {
 	width: 15px;
-	background-color: var(--gray);
+	background-color: var(--neutral2);
+	border-radius: 10px;
 }
 
-/* 
-#voiceSettings select::-webkit-scrollbar-track {
-}
-*/
+/* #voiceSettings select::-webkit-scrollbar-track {
+} */
 
 #voiceSettings select::-webkit-scrollbar-thumb {
-	background-color: var(--turq);
+	background-color: var(--accent1);
 	border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.7);
 }
@@ -286,13 +299,13 @@ fieldset {
 }
 
 #voiceSettings #button-wrapper button {
-	box-shadow: 0 0 0 .1em var(--turq);
+	box-shadow: 0 0 0 .1em var(--accent1);
 	border-radius: 2em;
 	transition: transform .3s cubic-bezier(.5,2.5,.7,.7), box-shadow .3s cubic-bezier(.5,2.5,.7,.7);
 }
 
 #voiceSettings #button-wrapper button:hover {
-	box-shadow: 0 0 0 .1em var(--turq), 0 .4em 0 0 var(--turq);
+	box-shadow: 0 0 0 .1em var(--accent1), 0 .4em 0 0 var(--accent1);
 	transform: translateY(-.4em);
 }
 
@@ -306,4 +319,49 @@ fieldset {
 	gap: 3em;
 	grid-template-columns: 1fr 1fr;
 	align-items: center;
+}
+
+#appearanceSettings fieldset {
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+
+#appearanceSettings label {
+	display: grid;
+	width: 100%;
+	height: 100%;
+	place-content: center;
+	place-items: center;
+}
+
+#appearanceSettings input[name="highlightColor"] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	width: 100px;
+	height: 100px;
+	background-color: transparent;
+	box-shadow: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	margin: 1em auto;
+}
+
+#appearanceSettings input[name="highlightColor"]::-webkit-color-swatch {
+	border-radius: 50%;
+	border: none;
+	box-shadow: 0px 0px .1em var(--base);
+	transition: transform .3s cubic-bezier(.5,2.5,.7,.7), box-shadow .3s cubic-bezier(.5,2.5,.7,.7);
+}
+
+#appearanceSettings label:has(input[name="highlightColor"]):hover input[name="highlightColor"]::-webkit-color-swatch {
+	box-shadow: 0 0 0 .1em var(--shadow), 0 0 .4em 0 var(--shadow);
+	transform: translateY(-.4em);
+}
+
+#appearanceSettings label:has(input[name="highlightColor"]):active input[name="highlightColor"]::-webkit-color-swatch {
+	box-shadow: 0 0 0 .1em var(--shadow), 0 0 .2em 0 var(--shadow);
+	transform: translateY(-.2em);
 }
